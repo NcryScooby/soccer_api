@@ -6,7 +6,7 @@ const listTeams = async (req: Request, res: Response) => {
     "SELECT teams.id, teams.team_name, tournaments.tournament_name, countrys.country_name, continents.continent_name FROM teams LEFT JOIN tournaments ON teams.tournament_id = tournaments.id LEFT JOIN countrys ON teams.country_id = countrys.id LEFT JOIN continents ON countrys.continent_id = continents.id ORDER BY teams.team_name ASC;";
 
   try {
-    const reponse = await db.promise().query(SQL);
+    const reponse: any = await db.promise().query(SQL);
     res.status(200).json({
       teams: reponse[0],
     });
