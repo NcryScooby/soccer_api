@@ -6,6 +6,7 @@ import { listPlayers } from "./controllers/Players/listPlayers";
 import { createPlayer } from "./controllers/Players/createPlayer";
 import { listPlayersByTournament } from "./controllers/Players/listPlayersByTournament";
 import { listPlayersByTeam } from "./controllers/Players/listPlayersByTeam";
+import { listTournaments } from "./controllers/Tournaments/listTournaments";
 
 const router = Router();
 
@@ -29,5 +30,8 @@ router.get("/players/tournament/:id", listPlayersByTournament);
 
 // List all players by team
 router.get("/players/team/:id", listPlayersByTeam);
+
+// List all tournaments
+router.get("/tournaments", listTournaments);
 
 export { router };
