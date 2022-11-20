@@ -4,6 +4,12 @@ import { db } from "../../databases/db";
 const createPlayer = async (req: Request, res: Response) => {
   const { player_name, player_position, player_team } = req.body;
 
+  if (!player_name || !player_position || !player_name) {
+    return res.status(400).json({
+      error: "Please fill out all fields",
+    });
+  }
+
   const SQL = `SELECT player_name FROM players WHERE player_name = '${player_name}';`;
 
   db.query(SQL, (error: string, result: string) => {

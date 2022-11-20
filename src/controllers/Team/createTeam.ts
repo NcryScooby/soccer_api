@@ -4,6 +4,12 @@ import { db } from "../../databases/db";
 const createTeam = (req: Request, res: Response) => {
   const { team_name, country_id, tournament_id } = req.body;
 
+  if (!team_name || !country_id || !tournament_id) {
+    return res.status(400).json({
+      error: "Please fill out all fields",
+    });
+  }
+
   const SQL = `SELECT team_name FROM teams WHERE team_name = '${team_name}';`;
 
   db.query(SQL, (error: string, result: string) => {
