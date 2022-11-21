@@ -12,7 +12,7 @@ const createTeam = (req: Request, res: Response) => {
 
   const SQL = `SELECT team_name FROM teams WHERE team_name = '${team_name}';`;
 
-  db.query(SQL, (error: string, result: string) => {
+  db.query(SQL, (error: any, result: any) => {
     if (error) {
       console.log(error);
       res.status(500).json({
@@ -25,7 +25,7 @@ const createTeam = (req: Request, res: Response) => {
     } else {
       const SQL = `INSERT INTO teams (team_name, country_id, tournament_id) VALUES ('${team_name}', '${country_id}', '${tournament_id}');`;
 
-      db.query(SQL, (error, result) => {
+      db.query(SQL, (error: any, result: any) => {
         if (error) {
           console.log(error);
           return res.status(500).json({

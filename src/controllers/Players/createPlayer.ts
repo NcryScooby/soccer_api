@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { db } from "../../databases/db";
 
 const createPlayer = async (req: Request, res: Response) => {
-  const { player_name, player_position, player_team } = req.body;
+  const { player_name, position_id, team_id, nationality_id } = req.body;
 
-  if (!player_name || !player_position || !player_name) {
+  if (!player_name || !position_id || !team_id || !nationality_id) {
     return res.status(400).json({
       error: "Please fill out all fields",
     });
@@ -12,7 +12,7 @@ const createPlayer = async (req: Request, res: Response) => {
 
   const SQL = `SELECT player_name FROM players WHERE player_name = '${player_name}';`;
 
-  db.query(SQL, (error: string, result: string) => {
+  db.query(SQL, (error: any, result: any) => {
     if (error) {
       console.log(error);
       res.status(500).json({
@@ -23,9 +23,9 @@ const createPlayer = async (req: Request, res: Response) => {
         error: "Player already exists",
       });
     } else {
-      const SQL = `INSERT INTO players (player_name, player_position, player_team) VALUES ('${player_name}', '${player_position}', '${player_team}');`;
+      const SQL = `INSERT INTO players (player_name, position_id, team_id, nationality_id) VALUES ('${player_name}', '${position_id}', '${team_id}', '${nationality_id}');`;
 
-      db.query(SQL, (error, result) => {
+      db.query(SQL, (error: any, result: any) => {
         if (error) {
           console.log(error);
           return res.status(500).json({
