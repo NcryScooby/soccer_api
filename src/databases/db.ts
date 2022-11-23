@@ -5,7 +5,7 @@ import mysql from "mysql2";
 import dotenv from "dotenv";
 dotenv.config();
 
-// Conecta com o banco SQL AGC
+// Conecta com o banco SQL
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
