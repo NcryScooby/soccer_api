@@ -7,6 +7,8 @@ import { createPlayer } from "./controllers/Players/createPlayer";
 import { listPlayersByTournament } from "./controllers/Players/listPlayersByTournament";
 import { listPlayersByTeam } from "./controllers/Players/listPlayersByTeam";
 import { listTournaments } from "./controllers/Tournaments/listTournaments";
+import { listTournamentByContinent } from "./controllers/Tournaments/listTournamentByContinent";
+import { createTournament } from "./controllers/Tournaments/createTournament";
 
 const router = Router();
 
@@ -33,5 +35,11 @@ router.get("/players/team/:id", listPlayersByTeam);
 
 // List all tournaments
 router.get("/tournaments", listTournaments);
+
+// List tournaments by continent
+router.get("/tournaments/continent/:id", listTournamentByContinent);
+
+// Create a tournament
+router.post("/tournaments", createTournament);
 
 export { router };
