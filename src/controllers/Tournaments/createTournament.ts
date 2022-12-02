@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { db } from "../../databases/db";
 
 const createTournament = (req: Request, res: Response) => {
+  const imagePath = req.file?.filename;
   const { tournament_name, country_id } = req.body;
 
   if (!tournament_name || !country_id) {
@@ -23,7 +24,7 @@ const createTournament = (req: Request, res: Response) => {
         error: "Tournament already exists",
       });
     } else {
-      const SQL = `INSERT INTO tournaments (tournament_name, country_id) VALUES ('${tournament_name}', '${country_id}');`;
+      const SQL = `INSERT INTO tournaments (tournament_name, country_id, tournament_logo) VALUES ('${tournament_name}', '${country_id}', '${imagePath}');`;
 
       db.query(SQL, (error: any, result: any) => {
         if (error) {

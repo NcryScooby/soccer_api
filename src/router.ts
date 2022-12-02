@@ -17,11 +17,11 @@ import { listCountries } from "./controllers/Countries/listCountries";
 
 const router = Router();
 
-const upload = (name: string) =>
+const upload = (folder: string) =>
   multer({
     storage: multer.diskStorage({
       destination(req, file, cb) {
-        cb(null, path.resolve(__dirname, "..", "uploads", `${name}`));
+        cb(null, path.resolve(__dirname, "..", "uploads", `${folder}`));
       },
       filename(req, file, cb) {
         cb(null, `${Date.now()}-${file.originalname}`);
@@ -57,7 +57,11 @@ router.get("/tournaments", listTournaments);
 router.get("/tournaments/continent/:id", listTournamentByContinent);
 
 // Create a tournament
-router.post("/tournaments", createTournament);
+router.post(
+  "/tournaments",
+  upload("tournaments").single("image"),
+  createTournament
+);
 
 // List all countries
 router.get("/countries", listCountries);
