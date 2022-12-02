@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import { db } from "../../databases/db";
 
 const createTeam = (req: Request, res: Response) => {
+  const imagePath = req.file?.filename;
   const { team_name, country_id, tournament_id } = req.body;
 
-  if (!team_name || !country_id || !tournament_id) {
+  if (!team_name || !country_id || !tournament_id || !imagePath) {
     return res.status(400).json({
       error: "Please fill out all fields",
     });
@@ -23,7 +24,7 @@ const createTeam = (req: Request, res: Response) => {
         error: "Team already exists",
       });
     } else {
-      const SQL = `INSERT INTO teams (team_name, country_id, tournament_id) VALUES ('${team_name}', '${country_id}', '${tournament_id}');`;
+      const SQL = `INSERT INTO teams (team_name, country_id, tournament_id, team_logo) VALUES ('${team_name}', '${country_id}', '${tournament_id}', '${imagePath}');`;
 
       db.query(SQL, (error: any, result: any) => {
         if (error) {

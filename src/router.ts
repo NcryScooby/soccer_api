@@ -1,4 +1,7 @@
 import { Router } from "express";
+import multer from "multer";
+import path from "node:path";
+
 import { listTeams } from "./controllers/Team/listTeams";
 import { createTeam } from "./controllers/Team/createTeam";
 import { listTeamsByTournament } from "./controllers/Team/listTeamByTournament";
@@ -12,11 +15,22 @@ import { createTournament } from "./controllers/Tournaments/createTournament";
 
 const router = Router();
 
+const uploadTeam = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, path.resolve(__dirname, "..", "uploads", "teams"));
+    },
+    filename(req, file, cb) {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    },
+  }),
+});
+
 // List all teams
 router.get("/teams", listTeams);
 
 // Create a team
-router.post("/teams", createTeam);
+router.post("/teams", uploadTeam.single("image"), createTeam);
 
 // List all teams by tournament
 router.get("/teams/:id", listTeamsByTournament);
