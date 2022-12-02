@@ -4,7 +4,7 @@ import { db } from "../../databases/db";
 const listPlayersByTournament = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const SQL = `SELECT players.id, players.player_name AS name, positions.position_name AS position, teams.team_name AS team, tournaments.tournament_name AS tournament FROM players LEFT JOIN teams ON players.team_id = teams.id LEFT JOIN tournaments ON teams.tournament_id = tournaments.id LEFT JOIN countrys ON teams.country_id = countrys.id LEFT JOIN continents ON countrys.continent_id = continents.id LEFT JOIN positions ON players.position_id = positions.id WHERE tournaments.id = '${id}' ORDER BY players.player_name ASC;`;
+  const SQL = `SELECT players.id, players.player_name AS name, positions.position_name AS position, teams.team_name AS team, tournaments.tournament_name AS tournament FROM players LEFT JOIN teams ON players.team_id = teams.id LEFT JOIN tournaments ON teams.tournament_id = tournaments.id LEFT JOIN countries ON teams.country_id = countries.id LEFT JOIN continents ON countries.continent_id = continents.id LEFT JOIN positions ON players.position_id = positions.id WHERE tournaments.id = '${id}' ORDER BY players.player_name ASC;`;
 
   try {
     const response: any = await db.promise().query(SQL);
