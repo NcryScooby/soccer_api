@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../../databases/db";
+import { io } from "../../index";
 
 const createTournament = (req: Request, res: Response) => {
   const imagePath = req.file?.filename;
@@ -33,6 +34,7 @@ const createTournament = (req: Request, res: Response) => {
             error: "Error inserting Tournament",
           });
         }
+        io.emit("tournaments@new");
         res.status(201).json({
           success: "Tournament created",
         });
