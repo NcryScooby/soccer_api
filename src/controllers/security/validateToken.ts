@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { verify } from "jsonwebtoken";
-import { db } from "../../databases/db";
 
 const validateToken = (req: Request, res: Response) => {
   const token = req.body.token;
