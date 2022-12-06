@@ -14,6 +14,10 @@ import { listTournamentByContinent } from "./controllers/Tournaments/listTournam
 import { createTournament } from "./controllers/Tournaments/createTournament";
 import { createCountry } from "./controllers/Countries/createCountry";
 import { listCountries } from "./controllers/Countries/listCountries";
+import { login } from "./controllers/security/login";
+import { register } from "./controllers/security/register";
+import { tokenMiddleware } from "./middlewares/token";
+import { validateToken } from "./controllers/security/validateToken";
 
 const router = Router();
 
@@ -29,44 +33,70 @@ const upload = (folder: string) =>
     }),
   });
 
+//@ Auth Routes
+
+// Login
+router.post("/login", login);
+
+// Register
+router.post("/register", register);
+
+// Validate token
+router.post("/validateToken", validateToken);
+
 // List all teams
-router.get("/teams", listTeams);
+router.get("/teams", tokenMiddleware, listTeams);
 
 // Create a team
-router.post("/teams", upload("teams").single("image"), createTeam);
+router.post(
+  "/teams",
+  tokenMiddleware,
+  upload("teams").single("image"),
+  createTeam
+);
 
 // List all teams by tournament
-router.get("/teams/:id", listTeamsByTournament);
+router.get("/teams/:id", tokenMiddleware, listTeamsByTournament);
 
 // List all players
-router.get("/players", listPlayers);
+router.get("/players", tokenMiddleware, listPlayers);
 
 // Create a player
-router.post("/players", createPlayer);
+router.post("/players", tokenMiddleware, createPlayer);
 
 // List all players by tournament
-router.get("/players/tournament/:id", listPlayersByTournament);
+router.get("/players/tournament/:id", tokenMiddleware, listPlayersByTournament);
 
 // List all players by team
-router.get("/players/team/:id", listPlayersByTeam);
+router.get("/players/team/:id", tokenMiddleware, listPlayersByTeam);
 
 // List all tournaments
-router.get("/tournaments", listTournaments);
+router.get("/tournaments", tokenMiddleware, listTournaments);
 
 // List tournaments by continent
-router.get("/tournaments/continent/:id", listTournamentByContinent);
+router.get(
+  "/tournaments/continent/:id",
+  tokenMiddleware,
+  listTournamentByContinent
+);
 
 // Create a tournament
 router.post(
   "/tournaments",
+  tokenMiddleware,
   upload("tournaments").single("image"),
   createTournament
 );
 
 // List all countries
-router.get("/countries", listCountries);
+router.get("/countries", tokenMiddleware, listCountries);
 
 // Create a country
-router.post("/countries", upload("countries").single("image"), createCountry);
+router.post(
+  "/countries",
+  tokenMiddleware,
+  upload("countries").single("image"),
+  createCountry
+);
 
 export { router };
