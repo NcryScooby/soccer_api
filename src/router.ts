@@ -18,6 +18,8 @@ import { login } from "./controllers/security/login";
 import { register } from "./controllers/security/register";
 import { tokenMiddleware } from "./middlewares/token";
 import { validateToken } from "./controllers/security/validateToken";
+import { listTeamById } from "./controllers/Teams/listTeamById";
+import { listTournamentById } from "./controllers/Tournaments/listTournamentById";
 
 const router = Router();
 
@@ -34,7 +36,6 @@ const upload = (folder: string) =>
   });
 
 //@ Auth Routes
-
 // Login
 router.post("/login", login);
 
@@ -44,8 +45,12 @@ router.post("/register", register);
 // Validate token
 router.post("/validateToken", validateToken);
 
+//@ Teams Routes
 // List all teams
 router.get("/teams", tokenMiddleware, listTeams);
+
+// List team by id
+router.get("/teams/:id", tokenMiddleware, listTeamById);
 
 // Create a team
 router.post(
@@ -56,8 +61,9 @@ router.post(
 );
 
 // List all teams by tournament
-router.get("/teams/:id", tokenMiddleware, listTeamsByTournament);
+router.get("/teams/tournament/:id", tokenMiddleware, listTeamsByTournament);
 
+//@ Players Routes
 // List all players
 router.get("/players", tokenMiddleware, listPlayers);
 
@@ -70,8 +76,12 @@ router.get("/players/tournament/:id", tokenMiddleware, listPlayersByTournament);
 // List all players by team
 router.get("/players/team/:id", tokenMiddleware, listPlayersByTeam);
 
+//@ Tournaments Routes
 // List all tournaments
 router.get("/tournaments", tokenMiddleware, listTournaments);
+
+// List tournament by id
+router.get("/tournaments/:id", tokenMiddleware, listTournamentById);
 
 // List tournaments by continent
 router.get(
@@ -88,6 +98,7 @@ router.post(
   createTournament
 );
 
+//@ Countries Routes
 // List all countries
 router.get("/countries", tokenMiddleware, listCountries);
 
