@@ -4,7 +4,7 @@ import { db } from "../../databases/db";
 const listTeamsByTournament = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const SQL = `SELECT teams.id, teams.team_name AS team, tournaments.tournament_name AS tournament FROM teams INNER JOIN tournaments ON teams.tournament_id = tournaments.id WHERE tournaments.id = '${id}' ORDER BY teams.team_name ASC;`;
+  const SQL = `SELECT teams.id, teams.team_name AS team, tournaments.tournament_name AS tournament, teams.team_logo AS logo FROM teams INNER JOIN tournaments ON teams.tournament_id = tournaments.id WHERE tournaments.id = ${id} ORDER BY teams.team_name ASC;`;
 
   try {
     const response: any = await db.promise().query(SQL);
@@ -16,6 +16,7 @@ const listTeamsByTournament = async (req: Request, res: Response) => {
           return {
             id: team.id,
             team: team.team,
+            logo: team.logo,
           };
         }),
       });
