@@ -4,9 +4,9 @@ import { io } from "../../index";
 
 const createTournament = (req: Request, res: Response) => {
   const imagePath = req.file?.filename;
-  const { tournament_name, country_id } = req.body;
+  const { tournament_name, country_id, tournament_description } = req.body;
 
-  if (!tournament_name || !country_id) {
+  if (!tournament_name || !country_id || !tournament_description) {
     return res.status(400).json({
       error: "Please fill out all fields",
     });
@@ -25,7 +25,7 @@ const createTournament = (req: Request, res: Response) => {
         error: "Tournament already exists",
       });
     } else {
-      const SQL = `INSERT INTO tournaments (tournament_name, country_id, tournament_logo) VALUES ('${tournament_name}', '${country_id}', '${imagePath}');`;
+      const SQL = `INSERT INTO tournaments (tournament_name, country_id, tournament_logo, tournament_description) VALUES ('${tournament_name}', '${country_id}', '${imagePath}', '${tournament_description}');`;
 
       db.query(SQL, (error: any, result: any) => {
         if (error) {

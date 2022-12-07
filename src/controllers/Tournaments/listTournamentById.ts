@@ -15,7 +15,7 @@ const listTournamentById = async (req: Request, res: Response) => {
       });
     }
     res.status(200).json({
-      team: response[0],
+      tournament: response[0],
     });
   } catch (error: any) {
     console.log(error);
