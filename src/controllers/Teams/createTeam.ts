@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../../databases/db";
+import { io } from "../..";
 
 const createTeam = (req: Request, res: Response) => {
   const imagePath = req.file?.filename;
@@ -33,6 +34,7 @@ const createTeam = (req: Request, res: Response) => {
             error: "Error inserting team",
           });
         }
+        io.emit("teams@new");
         res.status(201).json({
           success: "Team created",
         });

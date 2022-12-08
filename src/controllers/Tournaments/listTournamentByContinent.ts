@@ -13,11 +13,11 @@ const listTournamentByContinent = async (req: Request, res: Response) => {
     if (response[0].length > 0) {
       res.status(200).json({
         continent: response[0][0].continent,
-        total_tournaments: response[0].length,
+        total: response[0].length,
         tournaments: response[0].map((tournament: any) => {
           return {
             id: tournament.id,
-            team: tournament.name,
+            name: tournament.name,
             country: tournament.country,
           };
         }),

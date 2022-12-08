@@ -4,7 +4,7 @@ import { db } from "../../databases/db";
 const listTournamentById = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const SQL = `SELECT * FROM tournaments WHERE id = '${id}'`;
+  const SQL = `SELECT tournaments.id, tournament_name AS name, countries.country_name AS country, tournament_logo AS logo, tournament_description AS description FROM tournaments INNER JOIN countries ON tournaments.country_id = countries.id WHERE tournaments.id = '${id}';`;
 
   try {
     const response: any = await db.promise().query(SQL);
