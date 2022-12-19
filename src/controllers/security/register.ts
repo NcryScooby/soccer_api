@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../../databases/db";
 import bcrypt from "bcrypt";
+import { checkPasswordComplexity } from "../../functions/checkPasswordComplexity";
 
 const register = async (req: Request, res: Response) => {
   const { username, password } = req.body;
@@ -9,6 +10,12 @@ const register = async (req: Request, res: Response) => {
 
   if (!username || !password) {
     return res.status(400).json({ error: "Please enter all fields" });
+  }
+
+  if (!checkPasswordComplexity(password)) {
+    return res
+      .status(400)
+      .json({ error: "Your password is weak, please enter another password" });
   }
 
   const SQL = `SELECT username FROM users WHERE username = '${username}'`;
