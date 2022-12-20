@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { RowDataPacket } from "mysql2";
 import { db } from "../../databases/db";
 
 const createPlayer = async (req: Request, res: Response) => {
@@ -12,7 +13,7 @@ const createPlayer = async (req: Request, res: Response) => {
 
   const SQL = `SELECT player_name FROM players WHERE player_name = '${player_name}';`;
 
-  db.query(SQL, (error: any, result: any) => {
+  db.query<RowDataPacket[]>(SQL, (error, result) => {
     if (error) {
       console.log(error);
       res.status(500).json({
@@ -25,7 +26,7 @@ const createPlayer = async (req: Request, res: Response) => {
     } else {
       const SQL = `INSERT INTO players (player_name, position_id, team_id, nationality_id) VALUES ('${player_name}', '${position_id}', '${team_id}', '${nationality_id}');`;
 
-      db.query(SQL, (error: any, result: any) => {
+      db.query(SQL, (error) => {
         if (error) {
           console.log(error);
           return res.status(500).json({

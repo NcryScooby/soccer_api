@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { db } from "../../databases/db";
 import bcrypt from "bcrypt";
 import { checkPasswordComplexity } from "../../functions/checkPasswordComplexity";
+import { RowDataPacket } from "mysql2";
 
 const register = async (req: Request, res: Response) => {
   const { username, password } = req.body;
@@ -20,7 +21,7 @@ const register = async (req: Request, res: Response) => {
 
   const SQL = `SELECT username FROM users WHERE username = '${username}'`;
 
-  db.query(SQL, (error: any, results: any) => {
+  db.query<RowDataPacket[]>(SQL, (error, results) => {
     if (error) {
       console.log(error);
       res.status(500).json({ error: "Error inserting user" });
@@ -29,7 +30,7 @@ const register = async (req: Request, res: Response) => {
     } else {
       const SQL = `INSERT INTO users (username, password) VALUES ('${username}', '${hashedPassword}')`;
 
-      db.query(SQL, (error: any, results: any) => {
+      db.query<RowDataPacket[]>(SQL, (error) => {
         if (error) {
           console.log(error);
           res.status(500).json({ error: "Error inserting user" });

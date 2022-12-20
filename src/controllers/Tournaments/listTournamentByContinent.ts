@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { RowDataPacket } from "mysql2";
 import { db } from "../../databases/db";
 
 const listTournamentByContinent = async (req: Request, res: Response) => {
@@ -9,12 +10,12 @@ const listTournamentByContinent = async (req: Request, res: Response) => {
   `;
 
   try {
-    const response: any = await db.promise().query(SQL);
+    const response = await db.promise().query<RowDataPacket[]>(SQL);
     if (response[0].length > 0) {
       res.status(200).json({
         continent: response[0][0].continent,
         total: response[0].length,
-        tournaments: response[0].map((tournament: any) => {
+        tournaments: response[0].map((tournament) => {
           return {
             id: tournament.id,
             name: tournament.name,

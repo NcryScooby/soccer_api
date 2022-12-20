@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { RowDataPacket } from "mysql2";
 import { db } from "../../databases/db";
 
 const createCountry = (req: Request, res: Response) => {
@@ -13,7 +14,7 @@ const createCountry = (req: Request, res: Response) => {
 
   const SQL = `SELECT country_name FROM countries WHERE country_name = '${country_name}';`;
 
-  db.query(SQL, (error: any, result: any) => {
+  db.query<RowDataPacket[]>(SQL, (error, result) => {
     if (error) {
       console.log(error);
       res.status(500).json({
@@ -26,7 +27,7 @@ const createCountry = (req: Request, res: Response) => {
     } else {
       const SQL = `INSERT INTO countries (country_name, continent_id, country_logo) VALUES ('${country_name}', '${continent_id}', '${imagePath}');`;
 
-      db.query(SQL, (error: any, result: any) => {
+      db.query(SQL, (error) => {
         if (error) {
           console.log(error);
           return res.status(500).json({

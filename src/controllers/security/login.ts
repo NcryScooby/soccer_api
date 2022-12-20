@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { db } from "../../databases/db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { RowDataPacket } from "mysql2";
 
 const login = async (req: Request, res: Response) => {
   const jwtSecret: any = process.env.JWT_SECRET;
@@ -13,7 +14,7 @@ const login = async (req: Request, res: Response) => {
 
   const SQL = `SELECT * FROM users WHERE username = '${username}'`;
 
-  db.query(SQL, async (error: any, results: any) => {
+  db.query<RowDataPacket[]>(SQL, async (error, results) => {
     if (error) {
       console.log(error);
       res.status(500).json({ error: "Error logging in" });
