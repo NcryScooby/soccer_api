@@ -10,7 +10,7 @@ const tokenMiddleware = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const jwtSecret: any = process.env.JWT_SECRET;
+    const jwtSecret = process.env.JWT_SECRET as string;
 
     const decoded = jwt.verify(token, jwtSecret);
     req.body.user = decoded;

@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { RowDataPacket } from "mysql2";
 
 const login = async (req: Request, res: Response) => {
-  const jwtSecret: any = process.env.JWT_SECRET;
+  const jwtSecret = process.env.JWT_SECRET as string;
   const { username, password } = req.body;
 
   if (!username || !password) {

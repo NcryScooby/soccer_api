@@ -8,7 +8,7 @@ const validateToken = (req: Request, res: Response) => {
   }
 
   try {
-    const jwtSecret: any = process.env.JWT_SECRET;
+    const jwtSecret = process.env.JWT_SECRET as string;
     const decoded = verify(token, jwtSecret);
     return res.status(200).json({ success: "Token is valid", decoded });
   } catch (error) {
