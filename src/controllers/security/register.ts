@@ -3,7 +3,8 @@ import { db } from "../../databases/db";
 import bcrypt from "bcrypt";
 import { checkPasswordComplexity } from "../../functions/checkPasswordComplexity";
 import { RowDataPacket } from "mysql2";
-import nodemailer from "nodemailer";
+import { sendEmail } from "../../functions/sendEmail";
+import { sendSMS } from "../../functions/sendSMS";
 
 const register = async (req: Request, res: Response) => {
   const {
@@ -52,30 +53,8 @@ const register = async (req: Request, res: Response) => {
           console.log(error);
           res.status(500).json({ error: "Error inserting user" });
         } else {
-          const transporter = nodemailer.createTransport({
-            service: process.env.EMAIL_SERVICE,
-            auth: {
-              user: process.env.EMAIL_USER,
-              pass: process.env.EMAIL_PASS,
-            },
-          });
-
-          const mailOptions = {
-            from: process.env.EMAIL_SENDER,
-            to: email,
-            subject: "Welcome to Super League",
-            html: `
-              <h1>Hi ${first_name} ${last_name}</h1>
-              <p>welcome to Super League</p>
-            `,
-          };
-
-          transporter.sendMail(mailOptions, (error) => {
-            if (error) {
-              console.log(error);
-            }
-          });
-
+          sendEmail(first_name, last_name, email);
+          sendSMS(phone);
           res.status(201).json({ success: "User created" });
         }
       });
