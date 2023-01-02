@@ -15,6 +15,7 @@ const register = async (req: Request, res: Response) => {
     email,
     phone,
     place_birth,
+    favorite_team,
   } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -26,7 +27,8 @@ const register = async (req: Request, res: Response) => {
     !last_name ||
     !email ||
     !phone ||
-    !place_birth
+    !place_birth ||
+    !favorite_team
   ) {
     return res.status(400).json({ error: "Please enter all fields" });
   }
@@ -46,7 +48,7 @@ const register = async (req: Request, res: Response) => {
     } else if (results.length > 0) {
       res.status(409).json({ error: "User already exists" });
     } else {
-      const SQL = `INSERT INTO users (username, password, first_name, last_name, email, phone, place_birth) VALUES ('${username}', '${hashedPassword}', '${first_name}', '${last_name}', '${email}', '${phone}', '${place_birth}');`;
+      const SQL = `INSERT INTO users (username, password, first_name, last_name, email, phone, place_birth, team_id) VALUES ('${username}', '${hashedPassword}', '${first_name}', '${last_name}', '${email}', '${phone}', '${place_birth}', '${favorite_team}');`;
 
       db.query<RowDataPacket[]>(SQL, (error) => {
         if (error) {
