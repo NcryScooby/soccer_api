@@ -49,6 +49,9 @@ router.post("/validateToken", validateToken);
 // List all teams
 router.get("/teams", tokenMiddleware, listTeams);
 
+// List teams for register, no token required
+router.get("/teams/register", listTeams);
+
 // List team by id
 router.get("/teams/:id", tokenMiddleware, listTeamById);
 
